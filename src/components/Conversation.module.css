@@ -68,7 +68,6 @@
   border-radius: 8px;
   background: #fff;
 }
-.composer:focus-within { border-color: var(--blue); }
 .composer textarea {
   flex: 1;
   min-width: 0;
@@ -83,6 +82,7 @@
   line-height: 1.5;
   outline: none;
 }
+.composer textarea:focus-visible { outline: none; }
 .composer textarea::placeholder { color: #9aa4af; }
 .composer button {
   display: grid;
