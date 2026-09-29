@@ -21,7 +21,8 @@ describe('GREEN-API notification parsing', () => {
   })
   it('treats an empty receive response as no message', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 200 })))
-    const result = await receiveNotification({ apiUrl: 'https://3100.api.green-api.com', idInstance: '1', apiTokenInstance: 'test' }, new AbortController().signal)
+    const result = await receiveNotification({ idInstance: '1', apiTokenInstance: 'test' }, new AbortController().signal)
     expect(result).toBeNull()
+    expect(fetch).toHaveBeenCalledWith(expect.stringContaining('https://api.green-api.com/waInstance1/receiveNotification/test'), expect.any(Object))
   })
 })

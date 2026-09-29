@@ -12,8 +12,10 @@ export function normalizeApiUrl(value: string): string {
   return url.origin
 }
 
+const API_URL = normalizeApiUrl(import.meta.env.VITE_GREEN_API_URL || 'https://api.green-api.com')
+
 function methodUrl(credentials: Credentials, method: string): string {
-  return `${credentials.apiUrl}/waInstance${credentials.idInstance}/${method}/${encodeURIComponent(credentials.apiTokenInstance)}`
+  return `${API_URL}/waInstance${credentials.idInstance}/${method}/${encodeURIComponent(credentials.apiTokenInstance)}`
 }
 
 async function request(url: string, init: RequestInit, signal?: AbortSignal): Promise<unknown> {

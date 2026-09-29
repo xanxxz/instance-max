@@ -31,15 +31,23 @@ npm test
 
 1. Создайте и авторизуйте инстанс **GREEN-API: MAX** в [личном кабинете GREEN-API](https://console.green-api.com/).
 2. В настройках включите входящие уведомления (`incomingWebhook: yes`) и оставьте `webhookUrl` пустым. Это необходимо для получения сообщений через HTTP API.
-3. На экране входа укажите `apiUrl`, `idInstance` и `apiTokenInstance` из кабинета. В интерфейсе они названы «Адрес сервера», «Номер подключения» и «Ключ доступа».
+3. На экране входа укажите `idInstance` и `apiTokenInstance` из кабинета.
 4. Создайте чат по номеру РФ или РБ в международном формате, отправьте текст и попросите адресата ответить.
+
+Адрес API по умолчанию — `https://api.green-api.com`, как в [официальных примерах клиента MAX](https://github.com/green-api/max-api-client-golang). Если для вашего инстанса в кабинете указан отдельный хост, задайте его при запуске или сборке через `VITE_GREEN_API_URL`. Это только адрес хоста, без ключа доступа:
+
+```bash
+VITE_GREEN_API_URL=https://3100.api.green-api.com npm run dev
+```
 
 При создании чата приложение проверяет номер методом `CheckAccount` и использует полученный `chatId`. Отправка выполняется методом `SendMessage`. Входящие сообщения обрабатываются в одном цикле `ReceiveNotification` → `DeleteNotification`; повторное добавление сообщения исключено по его идентификатору. При отключении цикл останавливается.
 
 ## Безопасность и ограничения
 
-Ключ доступа не записывается в исходники, переменные сборки, `localStorage` или `sessionStorage`. Он очищается из состояния приложения при отключении. Запросы отправляются только на HTTPS-хост GREEN-API, указанный в кабинете. GREEN-API включает ключ в URL запросов, поэтому не сохраняйте и не передавайте сетевые журналы браузера с такими запросами.
+Ключ доступа не записывается в исходники, переменные сборки, `localStorage` или `sessionStorage`. Он очищается из состояния приложения при отключении. Запросы отправляются только на разрешённый HTTPS-хост GREEN-API. GREEN-API включает ключ в URL запросов, поэтому не сохраняйте и не передавайте сетевые журналы браузера с такими запросами.
 
 История чатов сохраняется только на время открытой вкладки. Метод `SendMessage` подтверждает постановку сообщения в очередь, но интерфейс не показывает статус доставки. Для работы приложения вкладка должна оставаться открытой. Прямые запросы из браузера требуют разрешения CORS для домена размещения; перед публикацией проверьте это на выбранном хостинге.
 
-## Документация методов: [CheckAccount](https://green-api.com/v3/docs/api/service/CheckAccount/), [SendMessage](https://green-api.com/v3/docs/api/sending/SendMessage/), [ReceiveNotification](https://green-api.com/v3/docs/api/receiving/technology-http-api/ReceiveNotification/), [DeleteNotification](https://green-api.com/v3/docs/api/receiving/technology-http-api/DeleteNotification/).
+## Документация методов
+
+[CheckAccount](https://green-api.com/v3/docs/api/service/CheckAccount/), [SendMessage](https://green-api.com/v3/docs/api/sending/SendMessage/), [ReceiveNotification](https://green-api.com/v3/docs/api/receiving/technology-http-api/ReceiveNotification/), [DeleteNotification](https://green-api.com/v3/docs/api/receiving/technology-http-api/DeleteNotification/).
